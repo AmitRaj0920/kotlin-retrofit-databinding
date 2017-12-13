@@ -35,23 +35,19 @@ class HomePageActivity : BaseActivity(), NavigationView.OnNavigationItemSelected
 
     override fun onBackPressed() {
         val backStackEntryCount = supportFragmentManager.backStackEntryCount
-        if (backStackEntryCount == 0) {
-            showExitAlert()
-        } else {
-            super.onBackPressed()
+        when {
+            backStackEntryCount == 0 -> showExitAlert()
+            drawer_layout.isDrawerOpen(GravityCompat.END) -> /*Closes the Appropriate Drawer*/
+                drawer_layout.closeDrawer(GravityCompat.END)
+            else -> super.onBackPressed()
         }
-//        if (drawer_layout.isDrawerOpen(GravityCompat.END)) {  /*Closes the Appropriate Drawer*/
-//            drawer_layout.closeDrawer(GravityCompat.END)
-//        } else {
-//            super.onBackPressed()
-//        }
     }
 
     private fun showExitAlert() {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle("Exit")
         dialog.setMessage("Do you want to exit?")
-        dialog.setPositiveButton("Yes") { dialogInterface, i -> System.exit(0) }
+        dialog.setPositiveButton("Yes") { _, _ -> System.exit(0) }
         dialog.setNegativeButton("No", null)
         dialog.show()
     }
